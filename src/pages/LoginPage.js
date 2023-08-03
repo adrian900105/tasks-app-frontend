@@ -11,48 +11,39 @@ import {
     Text,
     FormErrorMessage,
 } from '@chakra-ui/react'
-import React, { useState } from 'react';
-import { IoLogoUsd } from "react-icons/io";
-import { PiRedditLogoDuotone } from 'react-icons/pi';
-import { PiGitlabLogoLight } from 'react-icons/pi';
-import { Link, useNavigate } from 'react-router-dom';
-
-import httpClient from '../utils/httpClient';
-
+import React, { useState } from 'react'
+import { IoLogoUsd } from "react-icons/io"
+import { PiRedditLogoDuotone } from 'react-icons/pi'
+import { PiGitlabLogoLight } from 'react-icons/pi'
+import { Link, useNavigate } from 'react-router-dom'
+import httpClient from '../utils/httpClient'
 
 function LoginPage() {
-    const toast = useToast();
-    const navigate = useNavigate();
+    const toast = useToast()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
 
-    const changeEmail = (e) => setEmail(e.target.value);
-    const changePassword = (e) => setPassword(e.target.value);
+    const changeEmail = (e) => setEmail(e.target.value)
+    const changePassword = (e) => setPassword(e.target.value)
 
-    // console.log(email,password)
+    const navigate = useNavigate();
+    //console.log(email,password)
 
     // download data from server
     const loginUser = async () => {
-
-        // do testu
-        // const user = {
-        //     email: "adrianszeliga90@gmail.com",
-        //     password: "Adrian123#"
-        // }
-
 
         if (!email || !password) {
             setError(true);
             return;
         }
 
-        setLoading(true)
-
-        // złożenie zapytania
+        setLoading(true);
         try {
-            const {data} = await httpClient.post("/login",{
+
+            // AXIOS
+            const { data } = await httpClient.post("/login", {
                 email,
                 password
             })
@@ -60,28 +51,25 @@ function LoginPage() {
 
             toast({
                 title: data.message,
-                status: data.ok ? 'success' : 'error',
+                status: data.ok ? "success" : "error",
                 duration: 3000,
                 isClosable: true,
-            })
-            // przeniesienie na stronę główną
+            });
             navigate('/')
-        }
-        catch (error) {
-            console.log(error)
+        } catch (error) {
+            console.log(error);
             toast({
-                title: "Błąd servera",
-                status: 'error',
+                title: "Błędny login lub hasło",
+                status: "error",
                 duration: 3000,
                 isClosable: true,
-            })
-        }
-        finally {
+            });
+        } finally {
             // setError(false)
         }
+        setLoading(false);
+    };
 
-        setLoading(false)
-    }
     return (
         <div>
             <Box
