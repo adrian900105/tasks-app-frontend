@@ -1,11 +1,7 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   Heading,
-  Input,
   Spinner,
   Stack,
   useToast
@@ -14,11 +10,13 @@ import React, { useState } from 'react'
 import { IoLogoReddit, IoLogoUsd } from 'react-icons/io'
 import { PiGitlabLogoLight, PiRedditLogoDuotone } from 'react-icons/pi'
 import httpClient from '../utils/httpClient'
+import FormField from '../components/FormField'
+import { useNavigate } from 'react-router'
 
 function RegisterPage() {
 
-  const toast = useToast()
-
+  const toast = useToast();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -60,12 +58,27 @@ function RegisterPage() {
         email: user.email,
         password: user.password
       })
+      const {data:loginData} = await httpClient.post("/login",{
+        email: user.email,
+        password: user.password,        
+      })
+
       toast({
         title: data.message,
-        status: data.ok ? 'success' : 'error',
+        status: data.ok ? "success" : "error",
         duration: 3000,
         isClosable: true,
-      })
+      });
+
+      toast({
+        title: loginData.message,
+        status: data.ok ? "success" : "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate('/')
+
     } catch (error) {
       console.log(error)
       toast({
@@ -102,41 +115,41 @@ function RegisterPage() {
         </Heading>
 
         <Stack spacing={3} w="100%">
-          <FormControl isInvalid={error && !user.username}>
-            <FormLabel>
-              <IoLogoReddit />
-              Nazwa użytkownika
-            </FormLabel>
-            <Input name="username" onChange={handleChange} placeholder='Podaj nazwę użytkownika' value={user.username} />
-            {<FormErrorMessage>To pole jest wymagane</FormErrorMessage>}
-          </FormControl>
+          <FormField 
+            isInvalid={error && !user.username} 
+            label="Nazwa użytkownika"
+            name="username"
+            placeholder="Podaj nazwę użytkownika"
+            onChange={handleChange}
+            value={user.username}
+          />
 
-          <FormControl isInvalid={error && !user.email}>
-            <FormLabel>
-              <PiRedditLogoDuotone />
-              Email
-            </FormLabel>
-            <Input name="email" onChange={handleChange} placeholder='Podaj adres email' value={user.email} />
-            {<FormErrorMessage>To pole jest wymagane</FormErrorMessage>}
-          </FormControl>
+          <FormField 
+            isInvalid={error && !user.email} 
+            label="Email"
+            name="email"
+            placeholder="Podaj adres email"
+            onChange={handleChange}
+            value={user.email}
+          />
 
-          <FormControl isInvalid={error && !user.password}>
-            <FormLabel>
-              <PiGitlabLogoLight />
-              Hasło
-            </FormLabel>
-            <Input name="password" onChange={handleChange} placeholder='Podaj swoje hasło' value={user.password} />
-            {<FormErrorMessage>To pole jest wymagane</FormErrorMessage>}
-          </FormControl>
+          <FormField 
+            isInvalid={error && !user.password} 
+            label="Hasło"
+            name="password"
+            placeholder="Podaj hasło"
+            onChange={handleChange}
+            value={user.password}
+          />
 
-          <FormControl isInvalid={error && !user.password2}>
-            <FormLabel>
-              <PiGitlabLogoLight />
-              Powtórz hasło
-            </FormLabel>
-            <Input name="password2" onChange={handleChange} placeholder='Powtórz swoje hasło' value={user.password2} />
-            {<FormErrorMessage>To pole jest wymagane</FormErrorMessage>}
-          </FormControl>
+          <FormField 
+            isInvalid={error && !user.password2} 
+            label="Powtórz hasło"
+            name="password2"
+            placeholder="Ponownie wprowadź hasło"
+            onChange={handleChange}
+            value={user.password2}
+          />
 
           <Button
             onClick={registerUser}
