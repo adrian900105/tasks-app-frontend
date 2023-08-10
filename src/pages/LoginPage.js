@@ -16,7 +16,12 @@ import { IoLogoUsd } from "react-icons/io"
 import { PiRedditLogoDuotone } from 'react-icons/pi'
 import { PiGitlabLogoLight } from 'react-icons/pi'
 import { Link, useNavigate } from 'react-router-dom'
+
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+
 import httpClient from '../utils/httpClient'
+
+
 
 function LoginPage() {
     const toast = useToast()
@@ -24,6 +29,7 @@ function LoginPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
+    const [hidePassword, setHidePassword] = useState(true);
 
     const changeEmail = (e) => setEmail(e.target.value)
     const changePassword = (e) => setPassword(e.target.value)
@@ -108,7 +114,21 @@ function LoginPage() {
                             <PiGitlabLogoLight />
                             Hasło
                         </FormLabel>
-                        <Input onChange={changePassword} placeholder='Podaj swoje hasło' />
+                        <Input 
+                            type={hidePassword ? 'password' : 'text'} 
+                            onChange={changePassword} 
+                            placeholder='Podaj swoje hasło' 
+                        />
+                        <Box 
+                            onClick={() => setHidePassword(!hidePassword)}
+                            pos='absolute' 
+                            bottom="6px" 
+                            right="10px"
+                            zIndex={10} // warstwa
+                        > 
+                        {hidePassword ? <AiFillEye size ={26}/> : <AiFillEyeInvisible size ={26}/>}
+                        </Box>
+
                         {<FormErrorMessage>To pole jest wymagane</FormErrorMessage>}
                     </FormControl>
 
