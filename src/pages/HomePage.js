@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import httpClient from '../utils/httpClient'
-import { Box, Button, Container, SimpleGrid, useToast } from '@chakra-ui/react'
+import { Box, Button, Container, Heading, SimpleGrid, Text, useToast } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import TaskCard from '../components/TaskCard';
 import { deleteTask } from '../utils/deleteTask';
@@ -50,7 +50,7 @@ function HomePage() {
   const backToLogin = () => navigate("/login")
 
   const handleDelete = async (taskName) => {
-    const {data} = await deleteTask(taskName); // {data} - destrukturyzacja
+    const { data } = await deleteTask(taskName); // {data} - destrukturyzacja
     console.log(data);
     getData();
     try {
@@ -70,19 +70,19 @@ function HomePage() {
     }
   };
 
-  if(!user){
-    return(
+  if (!user) {
+    return (
       <Container maxW="6x1">
-          <h2> Odmowa dostępu</h2>
-          <Button onClick={backToLogin} colorScheme="green" size="lg">
+        <h2> Odmowa dostępu</h2>
+        <Button onClick={backToLogin} colorScheme="green" size="lg">
           Zaloguj
-          </Button>
+        </Button>
       </Container>
     )
   }
 
   return (
-    <Container maxW='6xl'>
+    <Container maxW="100%" p={0}>
       <Box
         bg="green.500" // Set the background color to green
         color="white" // Set the text color to white
@@ -90,31 +90,44 @@ function HomePage() {
         fontWeight="bold" // Set font weight to bold
         boxShadow="md" // Add a shadow
         mb={10}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
       >
-        {" "}
-        <h2>{user.message}</h2>
-        <Button onClick={logout} colorScheme="gray" size="lg">
-          Wyloguj
-        </Button>
+        <Container
+          maxW="8w1"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          {/* {" "} */}
+          <h2>{user.message}</h2>
+          <Button onClick={logout} colorScheme="gray" size="lg">
+            Wyloguj
+          </Button>
+        </Container>{" "}
       </Box>
-      <h2>{user.message}</h2>
-      <Button onClick={logout} colorScheme="gray" size="lg">
-        Wyloguj
-      </Button>
+      <Container maxW="8w1">
 
-      <SimpleGrid columns={{base: 1, sm: 2, lg: 4}} spacing={4}>
-        {tasks.map((item) => (
-          <TaskCard 
-            onDelete={()=>handleDelete(item.task)} 
-            key={item.task} 
-            task={item}
-          />
-        ))}
-      </SimpleGrid>
-      <DrawerComponent callbackData={getData}/>
+        <Heading as="h3" noOfLines={1} mb={5}>
+          Moje zadania
+        </Heading>
+
+        {tasks.length === 0 ?
+          (
+            <Text mb={10}>Nie znaleziono żadnych zadań</Text>
+          ) :
+          (
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={4}>
+              {tasks.map((item) => (
+                <TaskCard
+                  onDelete={() => handleDelete(item.task)}
+                  key={item.task}
+                  task={item}
+                />
+              ))}
+            </SimpleGrid>
+          )
+        }
+        <DrawerComponent callbackData={getData} />
+      </Container>
     </Container>
   )
 }

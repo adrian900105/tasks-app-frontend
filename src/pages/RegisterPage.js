@@ -4,14 +4,16 @@ import {
   Heading,
   Spinner,
   Stack,
+  Text,
   useToast
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { IoLogoReddit, IoLogoUsd } from 'react-icons/io'
-import { PiGitlabLogoLight, PiRedditLogoDuotone } from 'react-icons/pi'
+import { IoLogoUsd } from 'react-icons/io'
+// import { PiGitlabLogoLight, PiRedditLogoDuotone } from 'react-icons/pi'
 import httpClient from '../utils/httpClient'
 import FormField from '../components/FormField'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 
 function RegisterPage() {
 
@@ -58,9 +60,9 @@ function RegisterPage() {
         email: user.email,
         password: user.password
       })
-      const {data:loginData} = await httpClient.post("/login",{
+      const { data: loginData } = await httpClient.post("/login", {
         email: user.email,
-        password: user.password,        
+        password: user.password,
       })
 
       toast({
@@ -115,8 +117,8 @@ function RegisterPage() {
         </Heading>
 
         <Stack spacing={3} w="100%">
-          <FormField 
-            isInvalid={error && !user.username} 
+          <FormField
+            isInvalid={error && !user.username}
             label="Nazwa użytkownika"
             name="username"
             placeholder="Podaj nazwę użytkownika"
@@ -124,8 +126,8 @@ function RegisterPage() {
             value={user.username}
           />
 
-          <FormField 
-            isInvalid={error && !user.email} 
+          <FormField
+            isInvalid={error && !user.email}
             label="Email"
             name="email"
             placeholder="Podaj adres email"
@@ -133,22 +135,24 @@ function RegisterPage() {
             value={user.email}
           />
 
-          <FormField 
-            isInvalid={error && !user.password} 
+          <FormField
+            isInvalid={error && !user.password}
             label="Hasło"
             name="password"
             placeholder="Podaj hasło"
             onChange={handleChange}
             value={user.password}
+            type="password"
           />
 
-          <FormField 
-            isInvalid={error && !user.password2} 
+          <FormField
+            isInvalid={error && !user.password2}
             label="Powtórz hasło"
             name="password2"
             placeholder="Ponownie wprowadź hasło"
             onChange={handleChange}
             value={user.password2}
+            type="password"
           />
 
           <Button
@@ -157,6 +161,12 @@ function RegisterPage() {
             colorScheme='green'>
             {loading ? <Spinner color='white.500' /> : 'Zarejestruj się'}
           </Button>
+          <Text textAlign="center" mt="10px">
+            Nie masz konta?
+            <Link style={{ color: '#38A169' }} to="/login">
+              Zaloguj się
+            </Link>
+          </Text>
         </Stack>
       </Box>
     </div>

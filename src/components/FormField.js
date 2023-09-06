@@ -1,9 +1,9 @@
 import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React from 'react'
 import { IoLogoReddit } from 'react-icons/io'
 
-const FormField = ({isInvalid, label, onChange, value, name, placeholder}) => {
+const FormField = ({isInvalid, label, onChange, value, name, placeholder, type="text"}) => {
 
   return (
 <FormControl isInvalid={isInvalid}>
@@ -12,6 +12,7 @@ const FormField = ({isInvalid, label, onChange, value, name, placeholder}) => {
   {label}
 </FormLabel>
 <Input 
+    type={type}
     name={name} 
     onChange={onChange} 
     placeholder={placeholder}
