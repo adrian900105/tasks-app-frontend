@@ -140,7 +140,10 @@ function LoginPage() {
                     </Button>
 
                     <Text textAlign="center" mt="10px">
-                        Nie masz konta? <Link style={{ color: '#38A169' }} to="/register">Zarejestruj się</Link>
+                        Nie masz konta? 
+                        <Link style={{ color: '#38A169' }} to="/register">
+                            Zarejestruj się
+                        </Link>
                     </Text>
 
                 </Stack>

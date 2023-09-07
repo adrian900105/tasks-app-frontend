@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import TaskCard from '../components/TaskCard';
 import { deleteTask } from '../utils/deleteTask';
 import { DrawerComponent } from '../components/Drawer';
+import { updateTaskStatus } from '../utils/updateTaskStatus';
 
 function HomePage() {
 
@@ -70,6 +71,27 @@ function HomePage() {
     }
   };
 
+  const handleUpdateStatus = async (taskName,taskStatus) => {
+    try {
+      const {data} = await updateTaskStatus(taskName,taskStatus)
+      toast({
+        title: data.message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      })
+    } catch (error) {
+      toast({
+        title: 'Nie odnaleziono zadania',
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      })
+    }
+
+  }
+
+
   if (!user) {
     return (
       <Container maxW="6x1">
@@ -119,6 +141,7 @@ function HomePage() {
               {tasks.map((item) => (
                 <TaskCard
                   onDelete={() => handleDelete(item.task)}
+                  onUpdateStatus={(e) => handleUpdateStatus(item.task, e.target.value)}
                   key={item.task}
                   task={item}
                 />

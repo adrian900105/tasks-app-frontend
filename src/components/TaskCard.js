@@ -1,10 +1,15 @@
-import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Heading, Modal, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
+import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Heading, Modal, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useDisclosure } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
 
-const TaskCard = ({ task, onDelete }) => {
+const TaskCard = ({ task, onDelete, onUpdateStatus}) => {
     console.log(task)
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [currentStatus, setCurrentStatus] = useState()
+
+    useEffect(()=>{
+        setCurrentStatus(task.status)
+    },[task.status])
 
     const urgencyTheme = () => {
         switch (task.category) {
@@ -18,6 +23,11 @@ const TaskCard = ({ task, onDelete }) => {
                 return "green"
         }
     }
+
+const update = (e) => {
+    setCurrentStatus(e.target.value)
+    onUpdateStatus(e)
+}
 
     return (
         <Card>
@@ -37,6 +47,16 @@ const TaskCard = ({ task, onDelete }) => {
                 <Button onClick={onOpen} colorScheme='green'>
                     Usuń
                 </Button>
+
+                <Select 
+                    onChange={update} 
+                    name="status"
+                    value={currentStatus} 
+                >
+                    <option value={0}>Do zrobienia</option>
+                    <option value={1}>W realizacji</option>
+                    <option value={2}>Zakończone</option>
+                </Select>
 
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
